@@ -1,2 +1,3 @@
+<img align="left" width="64px" src="/src/images/icon.png" />
+
 # Argila-Parser
-A lib to help create CLI programs
