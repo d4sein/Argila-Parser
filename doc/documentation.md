@@ -150,7 +150,7 @@ See current list of decorators right below:
 - ###### [set_optional_params](#set_optional_params)
 
 
-**set_help**  
+### set_help  
 description: It sets the description of a param to be displayed in the help message.  
 usage: `@set_help({})`  
 example:
@@ -171,7 +171,7 @@ POSITIONAL ARGS:
 	b                   Second number
 ```
 
-**set_metavars**  
+### set_metavars  
 description: It sets a new name for a param.  
 usage: `@set_metavars({})`  
 example:  
@@ -194,7 +194,7 @@ POSITIONAL ARGS:
 	repeat
 ```
 
-**set_optional_params**  
+### set_optional_params  
 description: It sets optional params.  
 usage: `@set_optional_params([])`  
 example:  
