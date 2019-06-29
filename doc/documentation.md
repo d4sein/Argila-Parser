@@ -29,7 +29,7 @@ from argila import *
 
 class Commands(Argila):
 	def __init__(self):
-    super().__init__(Commands)
+    		super().__init__(Commands)
     
 	@root
 	def _root():
@@ -62,7 +62,7 @@ from argila import *
 
 class Commands(Argila):
 	def __init__(self):
-    super().__init__(Commands)
+    		super().__init__(Commands)
     
 	@root
 	def _root():
@@ -104,7 +104,7 @@ from argila import *
 
 class Commands(Argila):
 	def __init__(self):
-    super().__init__(Commands)
+    		super().__init__(Commands)
     
 	@root
 	def _root():
@@ -133,3 +133,8 @@ class Commands(Argila):
 ```
 
 ### Decorators
+Decorators are how you tweak your commands and set new functionalities to them.  
+See current list of decorators right below:
+- ###### @set_help()
+- ###### @set_metavars()
+- ###### @set_optional_params()
