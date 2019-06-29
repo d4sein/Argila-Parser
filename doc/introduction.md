@@ -76,8 +76,9 @@ if __name__ == '__main__':
 The `->` annotation is how you define the command name. In the first case, `adds_two_numbers()` will be called as `add`.  
 Also, keep in mind that, at least for now, the args come raw from user input, that is, as strings, so you need to convert them first if you want them as int or float types. This will change in the near future, don't worry.
 
-That's pretty much it for the basics. You can check the rest of the [documentation][doc] for more advanced stuff, or click [here][dec] to see about decorators.
+### Decorators
+Decorators in Argila are how you tweak commands, changing their names, metavars, setting optional parameters, help messages, etc.
+
+That's pretty much it for the basics. You can check the rest of the [documentation][doc] for more advanced stuff.
 
 [doc]: /doc/
-[dec]: /doc/decorators.md
- 
