@@ -86,10 +86,12 @@ class Commands(Argila):
 		print(int(a) * int(b))
 ```
 Argila has two builtin commands, `--version` and `--help`.  
+
 Besides, there are 3 types of parameters you can have: *positional*, *optional* and *flags*.  
 Positional parameters are necessary to run a command. For instance, `a` and `b` are positional params.  
 Optional parameters aren't necessary, but can be called when running a command.  
 To wrap it up, flags are bools, and are also not necessary. Their default value is False, and they always return True when called.  
+
 *To use optional params you need to list them with `@set_optional_params` (see [decorators](#decorators) to now more).*  
 *To use flags you need to set them to False on the method params, like so: `def command(flag=False)`*  
 
