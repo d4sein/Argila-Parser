@@ -12,8 +12,7 @@ class Commands(Argila):
 		super().__init__(Commands)
 ```
 
-Now we can define the root, that is, the method that will contain substantial info about your program, using the `@root` decorator.  
-The underscore on `_root()` is how you tell Argila not to grab it as a command. You can name this method however you like, but I recommend keeping it default.  
+Now we define the root, that is, the method that will contain substantial info about your program, using the `@root` decorator.  
 ```python
 from argila import *
 
@@ -31,17 +30,16 @@ class Commands(Argila):
 		'call': 'main.py'
 		}
 ```
+The underscore on `_root()` is how you tell Argila not to grab it as a command. You can name this method however you like, but I recommend keeping it default.  
+
 We can also call the class when the script is executed:
 ```python
 if __name__ == '__main__':
 	Commands()
 ```
-
 There you go. Technically the program is already able to run.  
 
-Now we can add commands.  
-The `->` annotation is how you define the command name. In the first case, `adds_two_numbers()` will be called as `add`.  
-Also, keep in mind that, at least for now, the args come raw from user input, that is, as strings, so you need to convert them first if you want them as int or float types. This will change in the near future, don't worry.
+Now we add the commands.  
 ```python
 from argila import *
 
@@ -75,6 +73,8 @@ class Commands(Argila):
 if __name__ == '__main__':
 	Commands()
 ```
+The `->` annotation is how you define the command name. In the first case, `adds_two_numbers()` will be called as `add`.  
+Also, keep in mind that, at least for now, the args come raw from user input, that is, as strings, so you need to convert them first if you want them as int or float types. This will change in the near future, don't worry.
 
 That's pretty much it for the basics. You can check the rest of the [documentation][doc] for more advanced stuff.
 
