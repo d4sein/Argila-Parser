@@ -30,5 +30,33 @@ We can also call the class when the script is executed:
 if __name__ == '__main__':
 	Commands()
 ```
-There you go. Technically the program is already able to run.  
-Now we can start adding commands.
+
+There you go. Technically the program is already able to run.
+Now we can start adding commands.  
+The `->` annotation is how you define the command name. In the first case, `adds_two_numbers()` will be called as `add`.
+```python
+class Commands(Argila):
+	def __init__(self):
+		super().__init__(Commands)
+
+	@root
+	def _root():
+		return {
+		'head': 'This message will show at the top of your program',
+		'version': 'Version 1.0.0',
+		'greeting': 'Welcome!',
+		'call': 'main.py'
+		}
+		
+	def adds_two_numbers(a, b) -> 'add':
+		print(int(a) + int(b))
+
+	def subtracts_two_numbers(a, b) -> 'sub':
+		print(int(a) - int(b))
+		
+	def divides_two_numbers(a, b) -> 'div':
+		print(int(a) / int(b))
+
+	def multiplies_two_numbers(a, b) -> 'mul':
+		print(int(a) * int(b))
+```
