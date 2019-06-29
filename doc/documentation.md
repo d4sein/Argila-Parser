@@ -42,7 +42,8 @@ class Commands(Argila):
 ```
 The underscore on `_root()` is how you tell Argila not to grab it as a command. You can name this method however you like, but I recommend keeping it default.
 
-`@root` is a decorator, it takes the decorated method as an argument.
+`@root` is a decorator, it takes the decorated method as an argument.  
+*Thorough explanation on decorators further in the documentation.*
 
 The *return* statement returns a dict with all the info:
 
@@ -54,9 +55,46 @@ greeting | Your program's greeting message
 call | How to run your program
 
 ### Commands
+Now you can start adding commands to your program, and it is as simple as creating a new method.
+```python
+from argila import *
 
+
+class Commands(Argila):
+	def __init__(self):
+    super().__init__(Commands)
+    
+	@root
+	def _root():
+		return {
+		'head': 'This is my calculator!',
+		'version': 'Version 1.0.0',
+		'greeting': 'Welcome!',
+		'call': 'main.py'
+		}
+		
+	def adds_two_numbers(a, b):
+		print(int(a) + int(b))
+
+	def subtracts_two_numbers(a, b):
+		print(int(a) - int(b))
+		
+	def divides_two_numbers(a, b):
+		print(int(a) / int(b))
+
+	def multiplies_two_numbers(a, b):
+		print(int(a) * int(b))
+```
 
 ### Docstrings and Annotations
-
+Docstrings and annotations are how you set command descriptions and names.  
+Let's take `adds_two_numbers()`, for example:
+```python
+	def adds_two_numbers(a, b) -> 'add':
+		'''Adds two numbers'''
+		print(int(a) + int(b))
+```
+`-> 'add'` is an annotation and it sets the command name.  
+`'''Adds two numbers'''` is a docstring and it sets the command description.  
 
 ### Decorators
