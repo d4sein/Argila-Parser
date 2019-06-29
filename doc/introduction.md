@@ -10,7 +10,7 @@ class Commands(Argila):
 ```
 
 Now we can define the root, that is, the method that will contain substantial info about your program, using the `@root` decorator.  
-The underscore on `_root()` is how you tell Argila not to grab it as a command. You can name this method however you like, but I recommend keeping it default.
+The underscore on `_root()` is how you tell Argila not to grab it as a command. You can name this method however you like, but I recommend keeping it default.  
 ```python
 class Commands(Argila):
 	def __init__(self):
@@ -25,3 +25,10 @@ class Commands(Argila):
 		'call': 'main.py'
 		}
 ```
+We can also call the class when the script is executed:
+```python
+if __name__ == '__main__':
+	Commands()
+```
+There you go. Technically the program is already able to run.  
+Now we can start adding commands.
