@@ -79,6 +79,7 @@ Also, keep in mind that, at least for now, the args come raw from user input, th
 ### Decorators
 Decorators in Argila are how you tweak commands, changing their names, metavars, setting optional parameters, help messages, etc.
 
+### Conclusion
 That's pretty much it for the basics. You can check the rest of the [documentation][doc] for more advanced stuff.
 
 [doc]: /doc/
