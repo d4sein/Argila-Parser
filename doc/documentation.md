@@ -135,9 +135,10 @@ class Commands(Argila):
 ### Decorators
 Decorators are how you tweak your commands and set new functionalities to them.  
 See current list of decorators right below:
-- ###### [@set_help()](#set_help)
-- ###### [@set_metavars()](#set_metavars)
-- ###### [@set_optional_params()](#set_optional_params)
+
+- [@set_help()](#set_help)
+- [@set_metavars()](#set_metavars)
+- [@set_optional_params()](#set_optional_params)
 
 
 ###### set_help
