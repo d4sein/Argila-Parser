@@ -1,8 +1,8 @@
 ### Introduction
-Argila is a class with methods that execute the logistics of arg parsing by pulling information from inheritance and decorators.
-It also relies on docstrings and annotations.
+> Argila is a class with methods that execute the logistics of arg parsing by pulling information from inheritance and decorators.
+> It also relies on docstrings and annotations.
 
-To start, we need to import argila and create a class to add the commands and inherit from it.
+> To start, we need to import argila and create a class to add the commands and inherit from it.
 ```python
 from argila import *
 
@@ -12,8 +12,8 @@ class Commands(Argila):
 		super().__init__(Commands)
 ```
 
-Now we can define the root, that is, the method that will contain substantial info about your program, using the `@root` decorator.  
-The underscore on `_root()` is how you tell Argila not to grab it as a command. You can name this method however you like, but I recommend keeping it default.  
+> Now we can define the root, that is, the method that will contain substantial info about your program, using the `@root` decorator.  
+> The underscore on `_root()` is how you tell Argila not to grab it as a command. You can name this method however you like, but I recommend keeping it default.  
 ```python
 from argila import *
 
