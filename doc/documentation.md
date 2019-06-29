@@ -145,12 +145,12 @@ class Commands(Argila):
 Decorators are how you tweak your commands and set new functionalities to them.  
 See current list of decorators right below:
 
-- [set_help](#set_help)
-- [set_metavars](#set_metavars)
-- [set_optional_params](#set_optional_params)
+- [set_help](#@set_help)
+- [set_metavars](#@set_metavars)
+- [set_optional_params](#@set_optional_params)
 
 
-### set_help  
+### @set_help  
 It sets the description of a param to be displayed in the help message.   
 example:
 ```python
@@ -170,7 +170,7 @@ POSITIONAL ARGS:
 	b                   Second number
 ```
 
-### set_metavars  
+### @set_metavars  
 It sets a new name for a param.   
 example:  
 ```python
@@ -181,7 +181,7 @@ def adds_two_numbers(a, b, n_times) -> 'add':
 		print(int(a) + int(b))
 ```
 result:  
-`python main.py --help --sub`  
+`python main.py --help --add`  
 ```
 USAGE:
 	main.py --add a b repeat
@@ -192,7 +192,7 @@ POSITIONAL ARGS:
 	repeat
 ```
 
-### set_optional_params  
+### @set_optional_params  
 It sets optional params.  
 example:  
 ```python
