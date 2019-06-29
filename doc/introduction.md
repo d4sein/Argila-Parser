@@ -60,3 +60,7 @@ class Commands(Argila):
 	def multiplies_two_numbers(a, b) -> 'mul':
 		print(int(a) * int(b))
 ```
+
+That's pretty much it for the basics. You can check the rest of the [documentation][doc] for more advanced stuff.
+
+[doc]: /doc/
