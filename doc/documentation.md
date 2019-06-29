@@ -90,7 +90,8 @@ Besides, there are 3 types of parameters you can have: *positional*, *optional* 
 Positional parameters are necessary to run a command. For instance, `a` and `b` are positional params.  
 Optional parameters aren't necessary, but can be called when running a command.  
 To wrap it up, flags are bools, and are also not necessary. Their default value is False, and they always return True when called.  
-*Thorough explanation on parameters further in the documentation.*
+*To use optional params you need to list them with `@set_optional_params` (see [decorators](#decorators) to now more).*  
+*To use flags you need to set them to False on the method params, like so: `def command(flag=False)`*  
 
 ### Docstrings and Annotations
 Docstrings and annotations are how you set command descriptions and names.  
@@ -148,8 +149,8 @@ See current list of decorators right below:
 
 
 **set_help**  
-`description: Empty`  
-`usage: @set_help({})`  
+description: Empty  
+usage: @set_help({})  
 
 **set_metavars**  
 
