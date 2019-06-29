@@ -151,10 +151,9 @@ See current list of decorators right below:
 
 
 ### set_help  
-description: It sets the description of a param to be displayed in the help message.  
-usage: `@set_help({})`  
+It sets the description of a param to be displayed in the help message.   
 example:
-```
+```python
 @set_help({'a': 'First number', 'b': 'Second number'})
 def adds_two_numbers(a, b) -> 'add':
 	'''Adds two numbers'''
@@ -172,8 +171,7 @@ POSITIONAL ARGS:
 ```
 
 ### set_metavars  
-description: It sets a new name for a param.  
-usage: `@set_metavars({})`  
+It sets a new name for a param.   
 example:  
 ```python
 @set_metavars({'n_times': 'repeat'})
@@ -195,8 +193,7 @@ POSITIONAL ARGS:
 ```
 
 ### set_optional_params  
-description: It sets optional params.  
-usage: `@set_optional_params([])`  
+It sets optional params.  
 example:  
 ```python
 @set_optional_params(['n_times'])
