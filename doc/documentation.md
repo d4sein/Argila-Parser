@@ -50,8 +50,8 @@ Key | Value
 --- | ---
 head | This will be shown at the top of your program's help message
 version | Your program's current version
-greeting | Your program's greeting message when ran without commands
-call | How to run your program (not its name)
+greeting | Your program's greeting message
+call | How to run your program
 
 ### Commands
 
