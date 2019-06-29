@@ -1,9 +1,9 @@
 ## Documentation
 
-[Introduction](#introduction)  
-[Class inheritance](#class-inheritance)  
-[Docstrings and Annotations](#docstrings-and-annotations)  
-[Decorators](#decorators)  
+- [Introduction](#introduction)  
+- [Class inheritance](#class-inheritance)  
+- [Docstrings and Annotations](#docstrings-and-annotations)  
+- [Decorators](#decorators)  
 
 ### Introduction
 
