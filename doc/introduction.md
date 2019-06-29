@@ -77,7 +77,7 @@ The `->` annotation is how you define the command name. In the first case, `adds
 Also, keep in mind that, at least for now, the args come raw from user input, that is, as strings, so you need to convert them first if you want them as int or float types. This will change in the near future, don't worry.
 
 ### Decorators
-Decorators in Argila are how you tweak commands, changing their names, metavars, setting optional parameters, help messages, etc.
+Decorators in Argila are how you tweak commands, changing their names, metavars, setting optional parameters, help messages, etc. Since they are functions, they also take arguments. For Argila in particular, it usually takes a dict or list as argument.
 
 ### Conclusion
 That's pretty much it for the basics. You can check the rest of the [documentation][doc] for more advanced stuff.
