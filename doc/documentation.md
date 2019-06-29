@@ -93,7 +93,7 @@ Optional parameters aren't necessary, but can be called when running a command.
 To wrap it up, flags are bools, and are also not necessary. Their default value is False, and they always return True when called.  
 
 *To use optional params you need to list them with `@set_optional_params` (see [decorators](#decorators) to now more).*  
-*To use flags you need to set them to False on the method params, like so: `def command(flag=False)`*  
+*To use flags you need to set them to False in the method params, like so: `def command(flag=False) -> 'command':`*  
 
 ### Docstrings and Annotations
 Docstrings and annotations are how you set command descriptions and names.  
@@ -151,10 +151,72 @@ See current list of decorators right below:
 
 
 **set_help**  
-description: Empty  
-usage: @set_help({})  
+description: It sets the description of a param to be displayed in the help message.  
+usage: `@set_help({})`  
+example:
+```
+@set_help({'a': 'First number', 'b': 'Second number'})
+def adds_two_numbers(a, b) -> 'add':
+	'''Adds two numbers'''
+	print(int(a) + int(b))
+```
+result:  
+`python main.py --help --add`  
+```
+USAGE:
+	main.py --add a b
+
+POSITIONAL ARGS:
+	a                   First number
+	b                   Second number
+```
 
 **set_metavars**  
+description: It sets a new name for a param.  
+usage: `@set_metavars({})`  
+example:  
+```python
+@set_metavars({'n_times': 'repeat'})
+def adds_two_numbers(a, b, n_times) -> 'add':
+	'''Adds two numbers'''
+	for _ in range(int(n_times)):
+		print(int(a) + int(b))
+```
+result:  
+`python main.py --help --sub`  
+```
+USAGE:
+	main.py --add a b repeat
 
+POSITIONAL ARGS:
+	a
+	b
+	repeat
+```
 
 **set_optional_params**  
+description: It sets optional params.  
+usage: `@set_optional_params([])`  
+example:  
+```python
+@set_optional_params(['n_times'])
+def adds_two_numbers(a, b, to_the_power_of) -> 'add':
+	'''Adds two numbers'''
+	if n_times:
+		print((int(a) + int(b)) ** int(n_times))
+	else:
+		print(int(a) + int(b))
+```
+result:  
+`python main.py --help --add`  
+```
+USAGE:
+	main.py --add a b [n_times]
+
+POSITIONAL ARGS:
+	a
+	b
+
+OPTIONAL ARGS:
+	n_times
+```
