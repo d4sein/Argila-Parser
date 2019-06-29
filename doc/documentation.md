@@ -90,11 +90,46 @@ class Commands(Argila):
 Docstrings and annotations are how you set command descriptions and names.  
 Let's take `adds_two_numbers()`, for example:
 ```python
+def adds_two_numbers(a, b) -> 'add':
+	'''Adds two numbers'''
+	print(int(a) + int(b))
+```
+`-> 'add'` is an annotation and it sets the command name.  
+`'''Adds two numbers'''` is a docstring and it sets the command description.
+
+This is the final product after adding docstrings and annotations to our code:
+```python
+from argila import *
+
+
+class Commands(Argila):
+	def __init__(self):
+    super().__init__(Commands)
+    
+	@root
+	def _root():
+		return {
+		'head': 'This is my calculator!',
+		'version': 'Version 1.0.0',
+		'greeting': 'Welcome!',
+		'call': 'main.py'
+		}
+		
 	def adds_two_numbers(a, b) -> 'add':
 		'''Adds two numbers'''
 		print(int(a) + int(b))
+
+	def subtracts_two_numbers(a, b) -> 'sub':
+		'''Subtracts two numbers'''
+		print(int(a) - int(b))
+		
+	def divides_two_numbers(a, b) -> 'div':
+		'''Divides two numbers'''
+		print(int(a) / int(b))
+
+	def multiplies_two_numbers(a, b) -> 'mul':
+		'''Multiplies two numbers'''
+		print(int(a) * int(b))
 ```
-`-> 'add'` is an annotation and it sets the command name.  
-`'''Adds two numbers'''` is a docstring and it sets the command description.  
 
 ### Decorators
