@@ -19,6 +19,10 @@ from argila import *
 class Commands(Argila):
 	def __init__(self):
 		super().__init__(Commands)
+
+
+if __name__ == '__main__':
+	Commands()
 ```
 
 ### Program Settings
@@ -39,6 +43,10 @@ class Commands(Argila):
 		'greeting': 'Welcome!',
 		'call': 'main.py'
 		}
+
+
+if __name__ == '__main__':
+	Commands()
 ```
 The underscore on `_root()` is how you tell Argila not to grab it as a command. You can name this method however you like, but I recommend keeping it default.
 
@@ -84,12 +92,16 @@ class Commands(Argila):
 
 	def multiplies_two_numbers(a, b):
 		print(int(a) * int(b))
+
+
+if __name__ == '__main__':
+	Commands()
 ```
 Argila has two builtin commands, `--version` and `--help`.  
 
 Besides, there are 3 types of parameters you can have: *positional*, *optional* and *flags*.  
 Positional parameters are necessary to run a command. For instance, `a` and `b` are positional params.  
-Optional parameters aren't necessary, but can be called when running a command.  
+Optional parameters aren't necessary, but can be called when running a command. If not called, they return None.  
 To wrap it up, flags are bools, and are also not necessary. Their default value is False, and they always return True when called.  
 
 *To use optional params you need to list them with `@set_optional_params` (see [decorators](#decorators) to now more).*  
@@ -139,6 +151,10 @@ class Commands(Argila):
 	def multiplies_two_numbers(a, b) -> 'mul':
 		'''Multiplies two numbers'''
 		print(int(a) * int(b))
+		
+
+if __name__ == '__main__':
+	Commands()
 ```
 
 ### Decorators
