@@ -85,7 +85,12 @@ class Commands(Argila):
 	def multiplies_two_numbers(a, b):
 		print(int(a) * int(b))
 ```
-Argila has two builtin commands, `--version` and `--help`.
+Argila has two builtin commands, `--version` and `--help`.  
+Besides, there are 3 types of parameters you can have: *positional*, *optional* and *flags*.  
+Positional parameters are necessary to run a command. For instance, `a` and `b` are positional params.  
+Optional parameters aren't necessary, but can be called when running a command.  
+To wrap it up, flags are bools, and are also not necessary. Their default value is False, and they always return True when called.  
+*Thorough explanation on parameters further in the documentation.*
 
 ### Docstrings and Annotations
 Docstrings and annotations are how you set command descriptions and names.  
@@ -143,8 +148,8 @@ See current list of decorators right below:
 
 
 ###### set_help
-`description`: `Empty`
-`usage:` `@set_help({})`
+`description: Empty`  
+`usage: @set_help({})`  
 
 ###### set_metavars
 
