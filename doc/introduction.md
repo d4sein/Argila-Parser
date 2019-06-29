@@ -33,7 +33,8 @@ if __name__ == '__main__':
 
 There you go. Technically the program is already able to run.
 Now we can start adding commands.  
-The `->` annotation is how you define the command name. In the first case, `adds_two_numbers()` will be called as `add`.
+The `->` annotation is how you define the command name. In the first case, `adds_two_numbers()` will be called as `add`.  
+Also, keep in mind that, at least for now, the args come raw from user input, that is, as strings, so you need to convert them first if you want them as int or float types. This will change in the near future, don't worry.
 ```python
 class Commands(Argila):
 	def __init__(self):
