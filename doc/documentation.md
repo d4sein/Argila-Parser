@@ -85,6 +85,7 @@ class Commands(Argila):
 	def multiplies_two_numbers(a, b):
 		print(int(a) * int(b))
 ```
+Argila has two builtin commands, `--version` and `--help`.
 
 ### Docstrings and Annotations
 Docstrings and annotations are how you set command descriptions and names.  
@@ -142,7 +143,10 @@ See current list of decorators right below:
 
 
 ###### set_help
+`description`: `Empty`
+`usage:` `@set_help({})`
 
 ###### set_metavars
+
 
 ###### set_optional_params
