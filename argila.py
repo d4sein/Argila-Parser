@@ -48,13 +48,17 @@ class Argila:
 		print(self._app['head'])
 		print('\nUSAGE:')
 		print(f'\t{self._app["call"]} --help (command)')
-		print('\nCOMMANDS:')
+		print('\nBUILTIN COMMANDS:')
 
 		full_command = f'-h, --help'
-		# gets lenght of `full_command` so it can be
-		# deducted from a fixed amount of spacing
 		spacing = ' ' * (20 - len(full_command))
 		print(f'\t{full_command}{spacing}Shows this message')
+
+		full_command = f'-v, --version'
+		spacing = ' ' * (20 - len(full_command))
+		print(f'\t{full_command}{spacing}Shows version')
+
+		print('\nCOMMANDS:')
 
 		for command, description in zip(self.argv_commands.values(), self.methods_description.values()):
 			full_command = f'{command[0]}, {command[1]}'
