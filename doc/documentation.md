@@ -230,3 +230,8 @@ POSITIONAL ARGS:
 OPTIONAL ARGS:
 	n_times
 ```
+
+### Conclusion
+That's pretty much it. For more code samples check [examples][ex].
+
+[ex]: /doc/cookbook/examples.md
