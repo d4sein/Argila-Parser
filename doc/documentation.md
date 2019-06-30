@@ -176,7 +176,6 @@ def adds_two_numbers(a, b) -> 'add':
 	print(int(a) + int(b))
 ```
 result:  
-`python main.py --help --add`  
 ```
 USAGE:
 	main.py --add a b
@@ -197,7 +196,6 @@ def adds_two_numbers(a, b, n_times) -> 'add':
 		print(int(a) + int(b))
 ```
 result:  
-`python main.py --help --add`  
 ```
 USAGE:
 	main.py --add a b repeat
@@ -221,7 +219,6 @@ def adds_two_numbers(a, b, to_the_power_of) -> 'add':
 		print(int(a) + int(b))
 ```
 result:  
-`python main.py --help --add`  
 ```
 USAGE:
 	main.py --add a b [n_times]
