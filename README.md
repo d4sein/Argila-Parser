@@ -13,3 +13,8 @@ You can check the [documentation][doc] for more info.
 
 ### How can I use it?
 Simply add `argila.py` to your project folder and you're good to go.
+
+### Goals
+[ ] Interactive commandline interface
+[ ] Conversion of arg type by hint
+[ ] Color scheme option
