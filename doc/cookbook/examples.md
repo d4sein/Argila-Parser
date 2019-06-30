@@ -63,8 +63,11 @@ Pretty cool, huh?
 USAGE:
 	main.py --help (command)
 
-COMMANDS:
+BUILTIN COMMANDS:
 	-h, --help          Shows this message
+	-v, --version       Shows version
+
+COMMANDS:
 	-a, --add           Adds two numbers
 	-d, --div           Divides two numbers
 	-m, --mul           Multiplies two numbers
