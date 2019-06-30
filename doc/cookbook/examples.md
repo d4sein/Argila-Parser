@@ -54,7 +54,8 @@ if __name__ == '__main__':
 **help message**
 ```
 $ python main.py --help
-
+```
+```
 This is my calculator!
 It can do a lot of things, like math.
 Pretty cool, huh?
@@ -69,4 +70,3 @@ COMMANDS:
 	-m, --mul           Multiplies two numbers
 	-s, --sub           Subtracts two numbers
  ```
- ---
