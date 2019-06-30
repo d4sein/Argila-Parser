@@ -15,6 +15,6 @@ You can check the [documentation][doc] for more info.
 Simply add `argila.py` to your project folder and you're good to go.
 
 ### Goals
-[checkbox:unchecked] Interactive commandline interface  
-[checkbox:unchecked] Conversion of arg type by hint  
-[checkbox:unchecked] Color scheme option  
+* [ ] Interactive commandline interface  
+* [ ] Conversion of arg type by hint  
+* [ ] Color scheme option  
