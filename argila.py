@@ -5,6 +5,7 @@ DOCUMENTATION
 The module is composed of two classes that interact with each other through their instantiated objects,
 and each class is composed of many staticmethods.
 
+All classes and methods are documented, dir() and __doc__ are your best friends.
 '''
 
 
