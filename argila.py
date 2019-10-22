@@ -1,8 +1,18 @@
+__DOC__ = '''
+DOCUMENTATION
+
+
+The module is composed of two classes that interact with each other through their instantiated objects,
+and each class is composed of many staticmethods.
+
+'''
+
+
 from sys import argv
 
 
 class ArgParser:
-    '''It has the methods to parse argv'''
+    '''Runs the Application and it is responsible for configuring and parsing the user inputs'''
     def __init__(self):
         # setting some general infos
         self.prefix = str() # comes before commands and args
@@ -14,7 +24,7 @@ class ArgParser:
 
     @staticmethod
     def config(prefix: str='--', version: str='', default_message: str='') -> None:
-        '''Sets some config for Application
+        '''Sets some config for the Application
 
         Parameters:
             prefix: str
@@ -28,6 +38,9 @@ class ArgParser:
             default_message: str
                 Default message to be returned when the Application is ran without passing any arguments
                 Optional -> Defaults to: str=""
+
+        Example usage:
+            parser.config(prefix='', version='1.0-a1', default_message='Welcome to my Application!')
         '''
         parser.prefix = prefix
         parser.version = version
@@ -40,6 +53,9 @@ class ArgParser:
         Parameters:
             app: object
                 Sets the Application object
+
+        Example usage:
+            asyncio.run(parser.run(Application))
          '''
         parser.app = app()
 
@@ -178,7 +194,7 @@ class ArgParser:
 
         Parameters:
             command_name: str
-            The command's name to access other infos in `parser.commands` dict
+                The command's name to access other infos in `parser.commands` dict
         '''
         argv = parser.filter_argv()
 
@@ -263,15 +279,22 @@ class CommandParser:
     '''Holds all command decorators'''
     @staticmethod
     def name(name: str, aliases: list=[]) -> object:
-        '''Gets command name
+        '''Sets command name
+        * Docstrings are used to set the command's description
 
         Parameters:
             name: str
-            Command's name
+                Command's name
 
             aliases: list
-            Command's aliases
-            Optional -> Defaults to: list=[]
+                Command's aliases
+                Optional -> Defaults to: list=[]
+
+        Example usage:
+            @command.name('hello', aliases=['oi'])
+            async def hello(self, name: str) -> None:
+                \'''Says hello to someone\'''
+                print(f'Hello, {name}.')
         '''
 
         # resetting `aliases`
@@ -297,11 +320,18 @@ class CommandParser:
 
     @staticmethod
     def positional(positional: dict) -> object:
-        '''Gets command positional parameters
+        '''Sets command positional parameters
+        * Arguments are always returned as strings
 
         Parameters:
             positional: dict
-            Command's positional parameters and their description
+                Command's positional parameters and their description
+
+        Example usage:
+            @command.positional({'a': 'First number', 'b': 'Second number'})
+            async def add(self, a: int, b: int) -> None:
+                \'''Adds two numbers together\'''
+                print(int(a) + int(b))
         '''
         def wrapper(function: object) -> object:
             parser.commands[function.__name__].update(
@@ -316,11 +346,22 @@ class CommandParser:
 
     @staticmethod
     def optional(optional: dict) -> object:
-        '''Gets command optional parameters
+        '''Sets command optional parameters
+        * Optional parameters should be set to False by default, and they always return True when called
 
         Parameters:
             optional: dict
-            Command's optional parameters and their description
+                Command's optional parameters and their description
+        
+        Example usage:
+            @command.optional({'shout': 'HELLO!'})
+            async def shout(self, name: str, shout: bool=False) -> None:
+                \'''Says hello to someone\'''
+                if shout:
+                    print(f'Hello, {name}!'.upper())
+                else:
+                    print(f'Hello, {name}.')
+
         '''
         def wrapper(function: object) -> object:
             parser.commands[function.__name__].update(
@@ -335,11 +376,20 @@ class CommandParser:
 
     @staticmethod
     def keyword(keyword: dict) -> object:
-        '''Gets command keyword parameters
+        '''Sets command keyword parameters
 
         Parameters:
             keyword: dict
-            Command's keyword parameters and their description
+                Command's keyword parameters and their description
+
+        Example usage:
+            @command.keyword({'name': 'Someone to say hello to'})
+            async def hello(self, name: str=None) -> None:
+                \'''Says hello (to someone?)\'''
+                if name:
+                    print(f'Hello, {name}.')
+                else:
+                    print('Hello, world.')
         '''
         def wrapper(function: object) -> object:
             parser.commands[function.__name__].update(
