@@ -1,408 +1,198 @@
-__DOC__ = '''
-DOCUMENTATION
+import typing
+import sys
 
 
-The module is composed of two classes that interact with each other through their instantiated objects,
-and each class is composed of many staticmethods.
-
-All classes and methods are documented, dir() and __doc__ are your best friends.
-'''
+class Error(Exception):
+    def __init__(self, error) -> None:
+        sys.excepthook = lambda *exception: print(f'\n{error}\n')
 
 
-from sys import argv
+class InvalidCommandError(Error):
+    def __init__(self) -> None:
+        error = 'Invalid command. \nCheck documentation for more info.'
+        super().__init__(error)
 
 
-class ArgParser:
-    '''Runs the Application and it is responsible for configuring and parsing the user inputs'''
+class InvalidArgumentType(Error):
+    def __init__(self, arg, typ) -> None:
+        error = f'Invalid argument type given "{arg}", expected {typ}. \nCheck documentation for more info.'
+        super().__init__(error)
+
+
+class MissingItemInTuple(Error):
+    def __init__(self) -> None:
+        error = 'Missing item in argument of type tuple.'
+        super().__init__(error)
+
+
+class MissingPositionalArgumentError(Error):
+    def __init__(self) -> None:
+        error = 'Missing positional arguments.'
+        super().__init__(error)
+
+
+class Parser:
     def __init__(self):
-        # setting some general infos
-        self.prefix = str() # comes before commands and args
-        self.version = str() # the Application version
-        self.default_message = str() # default message for when the Application is called without passing any args
+        self.prefix = '--'
+        self.commands = list()
+        # Obligatory config values for commands
+        self.obligatory = {'name'}
 
-        # setting the dict that will hold all commands info
-        self.commands = dict()
+    def create(self, app: object) -> object:
+        self.app = app
+        return app
 
-    @staticmethod
-    def config(prefix: str='--', version: str='', default_message: str='') -> None:
-        '''Sets some config for the Application
+    def run(self) -> None:
+        parsed = self.parse_argv()
+        command, args = self.parse_command(parsed)
+        # No error handling here, we don't want to omit useful errors for devs
+        command(self.app, **args)
 
-        Parameters:
-            prefix: str
-                Comes before commands and arguments
-                Optional -> Defaults to: str="--"
+    def parse_command(self, parsed: dict) -> dict:
+        command = [c for c in self.commands if c['name'] == parsed['name']][0]
+        annotations = iter(command['annotations'])
 
-            version: str
-                The Application version
-                Optional -> Defaults to: str=""
-
-            default_message: str
-                Default message to be returned when the Application is ran without passing any arguments
-                Optional -> Defaults to: str=""
-
-        Example usage:
-            parser.config(prefix='', version='1.0-a1', default_message='Welcome to my Application!')
-        '''
-        parser.prefix = prefix
-        parser.version = version
-        parser.default_message = default_message
-
-    @staticmethod
-    async def run(app: object) -> None:
-        '''Runs the Application
-
-        Parameters:
-            app: object
-                Sets the Application object
-
-        Example usage:
-            asyncio.run(parser.run(Application))
-         '''
-        parser.app = app()
-
-        # since the filename is also taken as an argument
-        # it is necessary to deduct it from the rest of the args
-
-        # if no arg has been passed
-        if len(argv) == 1:
-            print(parser.default_message)
-
-        # if one arg has been passed
-        elif len(argv) == 2:
-            # and the arg is `help`
-            if argv[1] == f'{parser.prefix}help':
-                parser.help()
-
-            elif argv[1] == f'{parser.prefix}version':
-                print(parser.version)
-
-                # else, looks for commands that take no args
-            else:
-                command = parser.exec(argv[1])
-                # if one is found, call it
-                if command:
-                    await command
-
-            # if more than one arg have been passed
-        elif len(argv) > 2:
-            # and the first arg is `help´
-            if argv[1] == f'{parser.prefix}help' and argv[2] in [call for command in parser.commands for call in parser.commands[command]['calls']]:
-                parser.help(argv[2])
-
-                # else, looks for commands
-            else:
-                command = parser.exec(argv[1])
-                # if one is found, call it
-                if command:
-                    await command
-
-    @staticmethod   
-    def help(call: str=None) -> None:
-        '''Sends a help message
-
-        Parameters
-            call: str
-                The call for a command to be matched in `parser.commands` dict
-                Optional -> Defaults to: `None`
-        '''
-        print('Help:')
-
-        for command in parser.commands:
-            name = parser.commands[command]['name']
-            
-            # if `call` in available command calls
-            # example: "--func" in ["--function", "--func"]
-            if call in parser.commands[command]['calls']:
-                calls = parser.commands[command]['calls']
-
-                # gathers all possible positional, optional and keyword arguments from command
+        def cast_args(arg: str, typ: object) -> typing.Any:
+            def cast_to(arg: str) -> typing.Union[int, float, str]:
                 try:
-                    positional = [i for i in parser.commands[command]['positional'].items()]
-                except KeyError:
-                    positional = False
-
-                try:    
-                    optional = [(parser.prefix + k, v) for k, v in parser.commands[command]['optional'].items()]
-                except KeyError:
-                    optional = False
+                    return int(arg)
+                except: pass
 
                 try:
-                    keyword = [(parser.prefix + k, v) for k, v in parser.commands[command]['keyword'].items()]
-                except KeyError:
-                    keyword = False
+                    return float(arg)
+                except: pass
 
-                print('\t{} {} {} {}\n'.format(parser.prefix + name,
-                    ('(positional)' if positional else ''),
-                    ('[optional]' if optional else ''),
-                    ('[keyword value]' if keyword else '')))
+                return arg # str
 
-                if len(calls) > 1:
-                    aliases = ', '.join(calls[:-1])
-                    print('Aliases:')
-                    print(f'\t{aliases}')
-
-                if positional:
-                    print('Positional:')
-                    for param in positional:
-                        spacing = ' ' * (20 - len(param[0]))
-                        print(f'\t{param[0]}{spacing}{param[1]}')
-                
-                if optional:
-                    print('Optional:')
-                    for param in optional:
-                        spacing = ' ' * (20 - len(param[0]))
-                        print(f'\t{param[0]}{spacing}{param[1]}')
-
-                if keyword:
-                    print('Keyword:')
-                    for param in keyword:
-                        spacing = ' ' * (20 - len(param[0]))
-                        print(f'\t{param[0]}{spacing}{param[1]}')
-
-                break
-            
-                # triggers the default help message for general info
-            elif not call:
-                description = parser.commands[command]['description']
-                spacing = ' ' * (20 - len(name))
-
-                print(f'\t{parser.prefix + name}{spacing}{description}')
-
-    @staticmethod
-    def filter_argv() -> list:
-        '''Filters the argv looking for compound arguments surrounded by double quotes'''
-        temp = str()
-        filtered_arg = list()
-
-        for arg in argv:
-            
-            if arg.startswith('"'):
-                temp += arg
-            
-            elif arg.endswith('"'):
-                temp += arg
-                filtered_arg.append(temp)
-                temp = str()
-            
-            else:
-                filtered_arg.append(arg)
-
-        return filtered_arg
-
-    @staticmethod
-    def exec(command_name: str) -> object:
-        '''Parses the arguments in a dict to be passed as `kwargs` to the command's fuction
-
-        Parameters:
-            command_name: str
-                The command's name to access other infos in `parser.commands` dict
-        '''
-        argv = parser.filter_argv()
-
-        # returns if command is not found
-        if command_name.replace(parser.prefix, '') not in parser.commands:
-            return
-
-        for command in parser.commands:
-            if command_name in parser.commands[command]['calls']:
-                # gets the callable command's function
-                command_exec = getattr(parser.app, command)
-
-                # if command doesn't have any params
-                if len(argv) == 2:
-                    return command_exec()
-
-                params = list()
-
-                # gathers all available positional, optional and keyword arguments
+            if typ in (int, float, str):
                 try:
-                    positional = [k for k in parser.commands[command]['positional'].keys()]
-                except KeyError:
-                    positional = []
+                    return typ(arg[0])
+                except:
+                    raise InvalidArgumentType(arg[0], typ)
+
+            if typ is typing.Any:
+                return cast_to(arg[0])
+
+            if typ.__origin__ is typing.Union:
+                arg = cast_to(arg[0])
+
+                if type(arg) in typ.__args__: return arg
+                else: raise InvalidArgumentType(arg, typ.__args__)
+
+            if typ.__origin__ is tuple:
+                if len(arg) < len(typ.__args__): raise MissingItemInTuple()
+                for i in range(len(arg)):
+                    arg[i] = cast_args([arg[i]], typ.__args__[i])
+
+                return arg
+
+            if typ.__origin__ is list:
+                for i in range(len(arg)):
+                    arg[i] = cast_args([arg[i]], typ.__args__[0])
+                return arg
+
+        if positional := command.get('positional'):
+            for arg in positional:
+                try:
+                    parsed_arg = parsed['args'][arg]
+                except:
+                    raise MissingPositionalArgumentError()
                 else:
-                    params += positional
-
-                try:    
-                    optional = [k for k in parser.commands[command]['optional'].keys()]
-                except KeyError:
-                    optional = []
-                else:
-                    params += optional
-
-                try:
-                    keyword = [k for k in parser.commands[command]['keyword'].keys()]
-                except KeyError:
-                    keyword = []
-                else:
-                    params += keyword
-
-                break
-
-        args = argv[2:]
-        kwargs = dict()
-
-        # tries to match the arguments from argv with the arguments gathered from command
-        for index, param in enumerate(params):
-            if param in positional:
-                if args[index].startswith(parser.prefix):
-                    exit()
-                    
-                kwargs.update(
-                    {
-                        param: args[index]
-                    }
-                )
-
-            elif param in optional and parser.prefix + param in args:
-                kwargs.update(
-                    {
-                        param: True
-                    }
-                )
-
-            elif param in keyword and parser.prefix + param in args:
-                
-                try:
-                    value = args.index(parser.prefix + param)
-                    kwargs.update(
+                    casted = cast_args(parsed_arg, next(annotations))
+                    parsed['args'].update(
                         {
-                            param: args[value + 1]
+                            arg: casted
                         }
                     )
 
-                except IndexError:
+        if optional := command.get('optional'):
+            for arg in optional:
+                try:
+                    parsed_arg = parsed['args'][arg]
+                except:
                     pass
+                else:
+                    casted = cast_args(parsed_arg, next(annotations))
+                    parsed['args'].update(
+                        {
+                            arg: casted
+                        }
+                    )
 
-        return command_exec(**kwargs)
+        if keyword := command.get('keyword'):
+            for arg in keyword:
+                try:
+                    parsed_arg = parsed['args'][arg]
+                except:
+                    pass
+                else:
+                    parsed['args'].update(
+                        {
+                            arg: True
+                        }
+                    )
 
+        return command['call'], parsed['args']
 
-class CommandParser:
-    '''Holds all command decorators'''
-    @staticmethod
-    def name(name: str, aliases: list=[]) -> object:
-        '''Sets command name
-        * Docstrings are used to set the command's description
-
-        Parameters:
-            name: str
-                Command's name
-
-            aliases: list
-                Command's aliases
-                Optional -> Defaults to: list=[]
-
-        Example usage:
-            @command.name('hello', aliases=['oi'])
-            async def hello(self, name: str) -> None:
-                \'''Says hello to someone\'''
-                print(f'Hello, {name}.')
-        '''
-
-        # resetting `aliases`
-        aliases = [] if not aliases else aliases
-
-        calls = aliases
-        calls.append(name)
-
-        calls = [parser.prefix + call for call in calls]
-
-        def wrapper(function: object) -> object:
-            description = function.__doc__ if function.__doc__ else ''
-
-            parser.commands[function.__name__] = {
-                'name': name,
-                'description': description,
-                'calls': calls
+    def parse_argv(self) -> dict:
+        parsed = dict(
+            {
+                'name': str(),
+                'args': dict()
             }
+        )
 
-            return function
+        if len(sys.argv) < 2: return # No command provided
 
-        return wrapper
+        argv_command = sys.argv[1]
+        # Checks if the given command exists
+        if not list(filter(lambda command: command['name'] == argv_command, self.commands)): raise InvalidCommandError()
 
-    @staticmethod
-    def positional(positional: dict) -> object:
-        '''Sets command positional parameters
-        * Arguments are always returned as strings
+        parsed['name'] = argv_command
 
-        Parameters:
-            positional: dict
-                Command's positional parameters and their description
+        args = sys.argv[2:]
+        if not args:
+            return parsed
 
-        Example usage:
-            @command.positional({'a': 'First number', 'b': 'Second number'})
-            async def add(self, a: int, b: int) -> None:
-                \'''Adds two numbers together\'''
-                print(int(a) + int(b))
-        '''
-        def wrapper(function: object) -> object:
-            parser.commands[function.__name__].update(
-                {
-                    'positional': positional
-                }
-            )
+        temp = []
 
-            return function
+        for arg in reversed(args):
+            if arg.startswith(self.prefix):
+                parsed['args'].update(
+                    {
+                        arg.strip(self.prefix): list(reversed(temp))
+                    }
+                )
 
-        return wrapper
-
-    @staticmethod
-    def optional(optional: dict) -> object:
-        '''Sets command optional parameters
-        * Optional parameters should be set to False by default, and they always return True when called
-
-        Parameters:
-            optional: dict
-                Command's optional parameters and their description
+                temp = []
+            else:
+                temp.append(arg)
         
-        Example usage:
-            @command.optional({'shout': 'HELLO!'})
-            async def shout(self, name: str, shout: bool=False) -> None:
-                \'''Says hello to someone\'''
-                if shout:
-                    print(f'Hello, {name}!'.upper())
-                else:
-                    print(f'Hello, {name}.')
+        return parsed
 
-        '''
-        def wrapper(function: object) -> object:
-            parser.commands[function.__name__].update(
+    def command(self, config: dict) -> object:
+        if not self.obligatory.issubset(set(config)):
+            raise ValueError('Missing obligatory config values')
+
+        def wrapper(func: object) -> object:
+            annotations = list()
+
+            for arg in func.__annotations__:
+                if arg == 'return': continue
+
+                annotations.append(func.__annotations__[arg])
+
+            config.update(
                 {
-                    'optional': optional
+                    'call': func,
+                    'annotations': annotations
                 }
             )
 
-            return function
-
-        return wrapper
-
-    @staticmethod
-    def keyword(keyword: dict) -> object:
-        '''Sets command keyword parameters
-
-        Parameters:
-            keyword: dict
-                Command's keyword parameters and their description
-
-        Example usage:
-            @command.keyword({'name': 'Someone to say hello to'})
-            async def hello(self, name: str=None) -> None:
-                \'''Says hello (to someone?)\'''
-                if name:
-                    print(f'Hello, {name}.')
-                else:
-                    print('Hello, world.')
-        '''
-        def wrapper(function: object) -> object:
-            parser.commands[function.__name__].update(
-                {
-                    'keyword': keyword
-                }
-            )
-
-            return function
-
+            return func
+        
+        self.commands.append(config)
         return wrapper
 
 
-parser = ArgParser()
-command = CommandParser()
+Argila = Parser()
