@@ -1,34 +1,7 @@
 import typing
 import sys
 
-
-class Error(Exception):
-    def __init__(self, error) -> None:
-        sys.excepthook = lambda *exception: print(f'\n{error}\n')
-
-
-class InvalidCommandError(Error):
-    def __init__(self) -> None:
-        error = 'Invalid command. \nCheck documentation for more info.'
-        super().__init__(error)
-
-
-class InvalidArgumentType(Error):
-    def __init__(self, arg, typ) -> None:
-        error = f'Invalid argument type given "{arg}", expected {typ}. \nCheck documentation for more info.'
-        super().__init__(error)
-
-
-class MissingItemInTuple(Error):
-    def __init__(self) -> None:
-        error = 'Missing item in argument of type tuple.'
-        super().__init__(error)
-
-
-class MissingPositionalArgumentError(Error):
-    def __init__(self) -> None:
-        error = 'Missing positional arguments.'
-        super().__init__(error)
+from argila import exceptions
 
 
 class Parser:
@@ -42,63 +15,30 @@ class Parser:
         self.app = app
         return app
 
-    def run(self) -> None:
+    def run(self, debug: bool=False, change_argv: typing.Optional[list]=None) -> None:
+        if change_argv:
+            sys.argv = change_argv
+        
         parsed = self.parse_argv()
         command, args = self.parse_command(parsed)
         # No error handling here, we don't want to omit useful errors for devs
+        if debug:
+            return command(self.app, **args)
+
         command(self.app, **args)
 
     def parse_command(self, parsed: dict) -> dict:
         command = [c for c in self.commands if c['name'] == parsed['name']][0]
         annotations = iter(command['annotations'])
 
-        def cast_args(arg: str, typ: object) -> typing.Any:
-            def cast_to(arg: str) -> typing.Union[int, float, str]:
-                try:
-                    return int(arg)
-                except: pass
-
-                try:
-                    return float(arg)
-                except: pass
-
-                return arg # str
-
-            if typ in (int, float, str):
-                try:
-                    return typ(arg[0])
-                except:
-                    raise InvalidArgumentType(arg[0], typ)
-
-            if typ is typing.Any:
-                return cast_to(arg[0])
-
-            if typ.__origin__ is typing.Union:
-                arg = cast_to(arg[0])
-
-                if type(arg) in typ.__args__: return arg
-                else: raise InvalidArgumentType(arg, typ.__args__)
-
-            if typ.__origin__ is tuple:
-                if len(arg) < len(typ.__args__): raise MissingItemInTuple()
-                for i in range(len(arg)):
-                    arg[i] = cast_args([arg[i]], typ.__args__[i])
-
-                return arg
-
-            if typ.__origin__ is list:
-                for i in range(len(arg)):
-                    arg[i] = cast_args([arg[i]], typ.__args__[0])
-                return arg
-
         if positional := command.get('positional'):
             for arg in positional:
                 try:
                     parsed_arg = parsed['args'][arg]
                 except:
-                    raise MissingPositionalArgumentError()
+                    raise exceptions.MissingPositionalArgumentError()
                 else:
-                    casted = cast_args(parsed_arg, next(annotations))
+                    casted = self.cast_args(parsed_arg, next(annotations))
                     parsed['args'].update(
                         {
                             arg: casted
@@ -112,7 +52,7 @@ class Parser:
                 except:
                     pass
                 else:
-                    casted = cast_args(parsed_arg, next(annotations))
+                    casted = self.cast_args(parsed_arg, next(annotations))
                     parsed['args'].update(
                         {
                             arg: casted
@@ -134,6 +74,45 @@ class Parser:
 
         return command['call'], parsed['args']
 
+    def cast_args(self, arg: str, typ: object) -> typing.Any:
+        def cast_to(arg: str) -> typing.Union[int, float, str]:
+            try:
+                return int(arg)
+            except: pass
+
+            try:
+                return float(arg)
+            except: pass
+
+            return arg # str
+
+        if typ in (int, float, str):
+            try:
+                return typ(arg[0])
+            except:
+                raise exceptions.InvalidArgumentType(arg[0], typ)
+
+        if typ is typing.Any:
+            return cast_to(arg[0])
+
+        if typ.__origin__ is typing.Union:
+            arg = cast_to(arg[0])
+
+            if type(arg) in typ.__args__: return arg
+            else: raise exceptions.InvalidArgumentType(arg, typ.__args__)
+
+        if typ.__origin__ is tuple:
+            if len(arg) < len(typ.__args__): raise exceptions.MissingItemInTuple()
+            for i in range(len(arg)):
+                arg[i] = self.cast_args([arg[i]], typ.__args__[i])
+
+            return tuple(arg)
+
+        if typ.__origin__ is list:
+            for i in range(len(arg)):
+                arg[i] = self.cast_args([arg[i]], typ.__args__[0])
+            return arg
+
     def parse_argv(self) -> dict:
         parsed = dict(
             {
@@ -142,11 +121,12 @@ class Parser:
             }
         )
 
-        if len(sys.argv) < 2: return # No command provided
+        if len(sys.argv) < 2: raise exceptions.InvalidCommandError() # No command provided
 
         argv_command = sys.argv[1]
         # Checks if the given command exists
-        if not list(filter(lambda command: command['name'] == argv_command, self.commands)): raise InvalidCommandError()
+        if not list(filter(lambda command: command['name'] == argv_command, self.commands)):
+            raise exceptions.InvalidCommandError()
 
         parsed['name'] = argv_command
 
