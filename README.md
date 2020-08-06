@@ -1,4 +1,4 @@
-## <div style="text-align:center;"><img align="center" width="54px" src="/src/images/icon.png" /><br>Argila Parser<br>![version 2.0.0](https://img.shields.io/badge/version-2.0.0-blue.svg?style=flat-square)
+## <div align="center"><img align="center" width="54px" src="/src/images/icon.png" /><br>Argila Parser<br>![version 2.0.0](https://img.shields.io/badge/version-2.0.0-blue.svg?style=flat-square)</div>
 
 <br>
 
