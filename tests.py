@@ -56,3 +56,7 @@ class Test(unittest.TestCase):
         result = Argila.run(debug=True, change_argv=argv)
 
         self.assertTrue(result)
+
+
+unittest.main()
+Argila.run()
