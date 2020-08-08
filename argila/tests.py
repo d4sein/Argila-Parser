@@ -21,8 +21,18 @@ class App:
         }
     )
     def test_arguments_parse(self, a: str, b: int=0, c:bool=False) -> typing.Tuple[str, int, bool]:
+        '''Testing argument parse'''
         return (a, b, c)
 
+    @Argila.command(
+        {
+            'name': 'test_function_without_args'
+        }
+    )
+    def test_function_without_args(self) -> bool:
+        '''Testing function without arguments'''
+        return True
+        
 
 class Test(unittest.TestCase):
     def test_type_check(self) -> None:
@@ -40,3 +50,9 @@ class Test(unittest.TestCase):
         self.assertEqual(a, 'string')
         self.assertEqual(b, 1)
         self.assertEqual(c, True)
+
+    def test_function_without_args(self) -> None:
+        argv = [__file__, 'test_function_without_args']
+        result = Argila.run(debug=True, change_argv=argv)
+
+        self.assertTrue(result)

@@ -1,5 +1,8 @@
 import unittest
-from argila import tests
+import typing
+from argila import tests, Argila
 
-suite = unittest.TestLoader().loadTestsFromModule(tests)
-unittest.TextTestRunner(verbosity=2).run(suite)
+# suite = unittest.TestLoader().loadTestsFromModule(tests)
+# unittest.TextTestRunner(verbosity=2).run(suite)
+
+Argila.run()
