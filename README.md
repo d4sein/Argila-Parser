@@ -69,3 +69,7 @@ The order in which you invoke each argument does **not** matter, as long as you 
 <br>
 
 Apart from it, the docstring `'''This command adds two numbers together'''` is how you set the description of a command. If not set, the description defaults to an empty string.  
+
+<br>
+
+Lastly, call `Argila.run()`, which is the method that will trigger all the subsequent others.  
