@@ -3,7 +3,7 @@
 <br>
 
 #### What is it?  
-It's a lightweight object oriented lib for Python 3.8+ to help create CLI programs more easily. It has and elegant design taking advantage of built-in modules, and delivering a conducive environment to fast development and readability.  
+It's a lightweight object oriented lib for Python 3.8+ to help create CLI programs more easily. It has an elegant design taking advantage of built-in modules, and delivering a conducive environment to fast development and readability.  
 
 <br>
 
@@ -26,6 +26,7 @@ class App:
         }
     )
     def add(self, a: typing.Union[int, float], b: typing.Union[int, float]) -> None:
+        '''This command adds two numbers together'''
         print(a + b)
 
 
@@ -50,19 +51,17 @@ Below is the configuration dict in its completeness.
     }
 }
 ```
+
 ***\*** means the key is obligatory.*  
 
-**>** *<u>name</u>*\*: The name of the command used to call it. (This is the only nomination that matters, the method can have any name you'd like)  
+**>** *name*\*: The name of the command used to call it. (This is the only nomination that matters, the method can have any name you'd like)  
 
-**>** *<u>positional</u>*: A dict with all the positional arguments, the `key` should have the same name as the actual parameter in the method; the `value` is a short description of it. You invoke this argument with `--key value`.  
+**>** *positional*: A dict with all the positional arguments, the `key` should have the same name as the actual parameter in the method; the `value` is a short description of it. You invoke this argument with `--key value`.  
 
-**>** *<u>optional</u>*: Same as positional, but optional arguments are **not** obligatory. You invoke this argument with `--key value`.  
+**>** *optional*: Same as positional, but optional arguments are **not** obligatory. You invoke this argument with `--key value`.  
 
-**>** *<u>keyword</u>*: Same as positional, but keyword arguments are **not** obligatory and work as flags (bools). You invoke this argument with `--key`.  
+**>** *keyword*: Same as positional, but keyword arguments are **not** obligatory and work as flags (bools). You invoke this argument with `--key`.  
 
 The order in which you invoke each argument does **not** matter, as long as you keep the syntax `--key value`. The examples `add --a 1 --b 2` and `add --b 2 --a 1` are both correct.  
 
-<br>
-
-#### Development
-In the process of adding `--help` and `--version` built-in commands.  
+Apart from it, the docstring `'''This command adds two numbers together'''` is how you set the description of a command. If not set, the description defaults to an empty string.  
